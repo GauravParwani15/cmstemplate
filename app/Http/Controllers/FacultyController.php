@@ -412,32 +412,40 @@ class FacultyController extends Controller
                 
 
 
-                public function check_availability  (){
-
-                    //  $resource_list = DB::table('resource')
-                    // ->select('resource_id') 
-                    // ->select('name')
-                    // ->get();
-                    // $booking_list = DB::table('booking')
-                    // ->select('booking_id')
-                    // ->select('resource')   
-                    // ->select('event_date') 
-                    // ->select('start_time') 
-                    // ->select('end_time')    
-                    // ->get();
-
+                public function check_availability(){
+        
                     if(session('e_id')){
                         $accepted=1;
                         $booking_list=booking::where('status','=',$accepted)->get();
-                        //$bookings_list = booking::where('event_date','<=',$today_date)->with('resource')->get();
                         $resource_list = resource::all();
-                        //$resource_name=resource::where('resource_id',$booking_list->name);
                         $booking_list=$booking_list->sortBy('event_date');
 
                         return view('faculty.pages.Booked_resources')->with('resource_list', $resource_list)->with('booking_list', $booking_list);
                     }
                     else{
                         return redirect()->back()->with('error','Unauthorised Access');
+                    }
+                }
+
+                public function filterbookedresources(Request $request){
+                    $filterdate = $request->input('filterdate');
+                    $filterresource = $request->input('filterresource');
+                    if(is_null($filterresource)){
+                        $booking_list = booking::where('event_date','>=',$filterdate)->where('status',1)->with('resource')->get();
+                        $booking_list=$booking_list->sortBy('event_date');
+                        return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list);
+                    }
+                    elseif(is_null($filterdate)){
+                        $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
+                        $booking_list = booking::where('resource_id',$resourceid[0]->resource_id)->where('status',1)->with('resource')->get();
+                        $booking_list=$booking_list->sortBy('event_date');
+                        return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list);
+                    }
+                    else{
+                        $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
+                        $booking_list = booking::where('resource_id',$resourceid[0]->resource_id)->where('event_date','>=',$filterdate)->where('status',1)->with('resource')->get();
+                        $booking_list=$booking_list->sortBy('event_date');
+                        return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list);
                     }
                 }
 
