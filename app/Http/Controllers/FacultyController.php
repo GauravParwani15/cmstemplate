@@ -656,7 +656,10 @@ class FacultyController extends Controller
 
     public function delete_resources($resource_id){
         if (session('e_id')){
+            //$data = booking::where('booking_id',$booking_id)->with('resource')->get();
+            DB::table('booking')->where('resource_id','=',$resource_id)->delete();
             DB::table('resource')->where('resource_id', '=', $resource_id)->delete();
+
             $resources = resource::all();
             return view('faculty.pages.manage_resources')->with('resources',$resources);
         }
