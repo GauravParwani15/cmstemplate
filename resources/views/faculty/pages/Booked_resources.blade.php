@@ -44,44 +44,20 @@
                 <div class="card-body">
                     <table class="">
                         <tr>
-                            <th><input type="text" class="<div class="" name=" search" placeholder="search by title"
-                                    autocomplete="off"></th>
-                            <th></th>
-                            <th></th>   
-                            <div class="">
-                                <th class="pl-5">
-                                    <p style="font-size:25px;font-weight: lighter;">Filter by:</p>
-                                </th>
-                                <th class="pl-0">
-                                    <div class="dropdown ">
-                                    <label class="fieldlabels">resource</label><br>
-                                        <select class='form-control' name='resource' id='resource'>
-                                            @foreach($resource_list as $resource)
-                                            <option value="{{ $resource->name}}">{{ $resource->name }}</option>
-                                            @endforeach  
-                                        </select>
-                                    </div> 
-                                    <!-- <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                            Resources
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                             <ul>
-                                        <li class=" dropdown-item" ><a>Auditorium</a></li>
-                                        <li class=" dropdown-item"><a>Smart Classroom (505)</a></li>   
-                                    </ul>
-                                        </div>
-                                </th>
-                            </div> -->
-                </div>
-                <th class="pl-5"><button class="btn btn-light pl-5">Apply</button></th>
-                <!-- <a href="./newapplicaion.html"><button type="button" class="btn btn-info float-right">New
-                        Applications</button>
-                </a> -->
-                </tr>
-                </table>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                    <th>
+                                        {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filterbookedresources', 'method'=>'POST']) !!}
+                                        <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Date:</label>
+                                        <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" />
+                                        <label for="filterresource" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Resource:</label>
+                                        <input style ="display:block;" type="text" class="col-xs-1 form-control input-sm" id="filterresource" name="filterresource" placeholder="Resource" />
+                                        <button type="submit" form="filterform" class="btn btn-default input-sm action-button" value="Submit">Apply</button>
+                                        {!! Form::close() !!}
+                                    </th>       
+                        </tr>
+                    </table>
             </div>
             <!-- end of header options -->
             <!-- Table of approved applications -->
