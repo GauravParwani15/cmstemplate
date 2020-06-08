@@ -60,7 +60,7 @@ Add New Resource
 <div class="wrap-input100 validate-input" data-validate="Please enter
 Resource name">
 <input class="input100" type="text" id="name" name="resource_name"
-placeholder="Resource Name">
+placeholder="Resource Name" required>
 <span class="focus-input100"></span>
 </div>
 
@@ -74,13 +74,13 @@ placeholder="Room ID">
 <div class="wrap-input100 validate-input" data-validate = "Please enter
 Capacity">
 <input class="input100" type="number" id= "capacity" name="capacity"
-placeholder="Capacity">
+placeholder="Capacity" required>
 <span class="focus-input100"></span>
 </div>
 
 <div class="wrap-input100 validate-input" data-validate = "Add Description">
 <textarea class="input100" id="features" name="features"
-placeholder="Features"></textarea>
+placeholder="Fill extra facilities if any"></textarea>
 <span class="focus-input100"></span>
 </div>
 

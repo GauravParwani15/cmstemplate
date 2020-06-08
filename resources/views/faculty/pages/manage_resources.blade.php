@@ -103,7 +103,7 @@
                                     <td>{{ $resource->name }}</td>
                                     <td>{{ $resource->capacity }}</td>
                                     <td>{{ $resource->facilities }}</td>
-                                    <td><a href=''><button type='button' class='btn btn-danger' onclick='' id='{{ $resource->resource_id }}'>Delete</button></a></td>
+                                    <td><button type='button' class='btn btn-danger' onclick="window.location='{{route('delete_resources',['id'=>$resource->resource_id])}}'">Delete</button></td>
                                     <td><a href=''><button type='button' class='btn btn-success' onclick='' id='{{ $resource->resource_id }}'>Modify</button></a></td>
                                 </tr>
                             @endforeach

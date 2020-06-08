@@ -47,7 +47,7 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/reports','FacultyController@reports');
     Route::get('/manage_users','FacultyController@manage_users');
  
-
+    Route::post('/add_resources','FacultyController@store_resource');
     Route::post('/searchadmin/1','FacultyController@searchapprovedapplications');
     Route::post('/searchadmin/0','FacultyController@searchnewapplications');
     Route::get('/application_data/{id}','FacultyController@application_data')->name('application_data');
@@ -59,6 +59,8 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/accept/{id}','FacultyController@accept')->name('accept');
     Route::get('/reject/{id}','FacultyController@reject')->name('reject');
     Route::get('/cancel/{id}','FacultyController@cancel')->name('cancel');
+
+    Route::get('/delete_resources/{id}','FacultyController@delete_resources')->name('delete_resources');
 });
 
 
