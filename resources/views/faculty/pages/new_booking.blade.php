@@ -57,13 +57,15 @@
                     <!-- <p>Fill all form field to go to next step</p> -->
                     {!! Form::open(['id'=>'msform', 'action' => 'BookingsController@store', 'method'=>'POST']) !!} 
                         <!-- progressbar -->
+                        <!-- <div>
                         <ul id="progressbar" class="ml-5  pl-5">
+                            <li ><strong>.</strong></li>
                             <li class="active" id="account"><strong>Step 1</strong></li>
                             <li id="personal"><strong>Step 2</strong></li>
-                            <!-- <li id="payment"><strong>Image</strong></li>
-                            <li id="confirm"><strong>Finish</strong></li> -->
+                            
+                            <li id="confirm"><strong>Finish</strong></li>
                         </ul>
-                        
+                        </div> -->
                         <div class="progress">
                             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
@@ -96,41 +98,33 @@
                         </fieldset>  
                         <fieldset>
                             <div class="form-card">
-                                <!-- <div class="row">
-                                    <div class="col-7">
-                                        <h2 class="fs-title">Personal Information:</h2>
-                                    </div>
-                                    <div class="col-5">
-                                        <h2 class="steps">Step 2 - 4</h2>
-                                    </div>
-                                </div>  -->
                                 <label class="fieldlabels">For class</label> <input type="text" name="class" placeholder="For class" /> <label class="fieldlabels">Expected Crowd</label> <input type="number" name="crowd" placeholder="Expected Crowd" /> <label class="fieldlabels">Expected Guests/Speaker/company name</label> <input type="text" name="guests" placeholder="Guests/Speaker/Company name" /> <label class="fieldlabels">Speaker/Guests with Designation and Company</label> <input type="text" name="designation" placeholder="Designation/Company name" />
                             </div> <button type="submit" form="msform" class="action-button" value="Submit">Submit</button> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
-                        <fieldset>
+                        <!-- <fieldset>
                             <div class="form-card">
-                                <!-- <div class="row">
+                                <div class="row">
                                     <div class="col-7">
                                         <h2 class="fs-title">Finish:</h2>
                                     </div>
                                     <div class="col-5">
                                         <h2 class="steps">Step 4 - 4</h2>
                                     </div>
-                                </div>  -->
+                                </div> 
                                 
                                 <br><br>
                                 <h2 class="purple-text text-center"><strong>Booking request sent</strong></h2> <br>
                                 <div class="row justify-content-center">
                                     <div class="col-3"> <img src="https://i.imgur.com/GwStPmg.png" class="fit-image"> </div>
                                 </div> <br><br>
-                                <!-- <div class="row justify-content-center">
+                                <div class="row justify-content-center">
                                     <div class="col-7 text-center">
                                         <h5 class="purple-text text-center">You Have Successfully Signed Up</h5>
                                     </div>
-                                </div> -->
+                                </div>
                                 <a href="{{ url ('/staff/new_booking') }}"><button type="button" class="btn btn-info">New Booking request</button></a>
                             </div>
-                        </fieldset>
+                        </fieldset> -->
                     {!! Form::close() !!}
                 </div>
             </div>

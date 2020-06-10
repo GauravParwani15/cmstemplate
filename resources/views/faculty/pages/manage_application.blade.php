@@ -118,7 +118,7 @@
                                 </th>
                     </tr> 
                 </table>
-                   <table class="table" id="table">
+                   <table class="table text-left" id="table">
                        <thead class="thead-dark">
                            <tr>
                                <th scope="col">Event Name</th>

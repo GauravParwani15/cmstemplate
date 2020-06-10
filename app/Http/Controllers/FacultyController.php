@@ -352,15 +352,38 @@ class FacultyController extends Controller
 
     public function store_resource(Request $request){
        
-        $resource = new resource;
-        $resource->name=$request->input('resource_name');
-        $resource->capacity=$request->input('capacity');
-        $resource->facilities=$request->input('features');
-        $resource->save();
-        //DB::table('resource')->insert($resource);
-        return redirect('/staff/manage_resources')->with('success','Resource Added');
+        if(session('e_id')){
+            $resource = new resource;
+            $resource->name=$request->input('resource_name');
+            $resource->capacity=$request->input('capacity');
+            $resource->facilities=$request->input('features');
+            $resource->save();
+            //DB::table('resource')->insert($resource);
+            return redirect('/staff/manage_resources')->with('success','Resource Added');
+        }
+        else{
+            return redirect('/staff/manage_resources')->with('success','Changes are done');
+        }
     }
 
+    public function modify_resource(Request $request){
+       
+
+        if(session('e_id')){
+        //App\Flight::where(session('resource_id'));
+            $resource = resource::find(session('resource_id'));
+            $resource->name=$request->input('resource_name');
+            $resource->capacity=$request->input('capacity');
+            $resource->facilities=$request->input('features');
+            $resource->save();
+
+            return redirect('/staff/manage_resources')->with('success','Changes are done');
+        }
+
+        else{
+            return redirect()->back()->with('error','Unauthorised Access');
+        }
+    }
 
     public function reports(){
         if(session('e_id')){
@@ -452,6 +475,17 @@ class FacultyController extends Controller
                     }
                 }
 
+                public function resource_data($resource_id){
+                    
+                    if(session('e_id')){
+                        $data = resource::where('resource_id',$resource_id)->get(); 
+                        session(['resource_id' => $resource_id]);
+                        return view('faculty.pages.resource_data')->with('data',$data);
+                    }
+                    else{
+                        return redirect()->back()->with('error','Unauthorised Access');
+                    }
+                }
 
 
                 public function search(Request $request){

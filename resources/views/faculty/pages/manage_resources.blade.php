@@ -25,7 +25,7 @@
 <body>
 
     <!-- Details Modal -->
-    <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content" style="background-color: #e7e1e1;">
@@ -63,13 +63,13 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 
         <!-- Details modal end -->
 
 
-    <div class="">
+    <!-- <div class="">
         <div class="pt-5" style="background-color:white;">
             <div class="card" style="border: none;">
                 <h3>Manage Resources</h3><br><br>
@@ -79,9 +79,17 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
         
-                
+    <div class="pl-5 m-l-10"> <a href="{{ url ('/staff/add_resources') }}"><button type="button"  class="btn btn-info float-left " >Add Resources</button></a></div>
+
+
+    <div class="text-center">
+        <h1>Manage Resources</h1>
+    </div>      
+    
+
+
     <div class=" px-5">
                 <div class="">
                     <div class="">
@@ -96,7 +104,6 @@
                                     <th></th>
                                 </tr>
                                 </thead>
-
                             <tbody>
                             @foreach($resources as $resource)
                                 <tr>
@@ -104,11 +111,11 @@
                                     <td>{{ $resource->capacity }}</td>
                                     <td>{{ $resource->facilities }}</td>
                                     <td><button type='button' class='btn btn-danger' onclick="window.location='{{route('delete_resources',['id'=>$resource->resource_id])}}'">Delete</button></td>
-                                    <!-- <td><a href=''><button type='button' class='btn btn-success' onclick='' id='{{ $resource->resource_id }}'>Modify</button></a></td> -->
+                                    <!-- <td><a href=""><button type='button' class='btn btn-success' data-toggle="modal" data-target="#exampleModalCenter" id="{{ $resource->resource_id }}">Modify</button></a></td> -->
+                                     <td><a href= "{{route('resource_data',['id'=>$resource->resource_id])}}"><button type='button' class='btn btn-success' >Modify</button></a></td>
                                 </tr>
                             @endforeach
                             </tbody>
-                                
                         </table>
                    
                     </div>

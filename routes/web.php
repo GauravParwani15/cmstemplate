@@ -38,6 +38,7 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/new_booking','FacultyController@new_booking');
     Route::get('/check_availability','FacultyController@check_availability');
     Route::get('booking/booking_data/{id}','FacultyController@booking_data')->name('booking_data');
+    Route::get('booking/resource_data/{id}','FacultyController@resource_data')->name('resource_data');
     Route::get('booking/history_data/{id}','FacultyController@bookinghist_data')->name('history_data');
     Route::post('/store','BookingsController@store');
     Route::post('/search','FacultyController@search');
@@ -47,6 +48,7 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/reports','FacultyController@reports');
     Route::get('/manage_users','FacultyController@manage_users');
  
+    Route::post('resource_data','FacultyController@modify_resource');
     Route::post('/add_resources','FacultyController@store_resource');
     Route::post('/searchadmin/1','FacultyController@searchapprovedapplications');
     Route::post('/searchadmin/0','FacultyController@searchnewapplications');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use App\booking;
+use App\Faculty;
+use App\cms_roles;
 use App\resource;
 use DB;
 
@@ -76,8 +78,11 @@ class BookingsController extends Controller
                 return redirect('/staff/manage_application')->with('success','Booking Request Send');
             }
         }
-    }
 
+
+
+
+    }
 
     /**
      * Display the specified resource.
