@@ -419,20 +419,104 @@ class FacultyController extends Controller
                     }
                 }
 
-                public function new_booking(){
-                    
+                public function new_bookingstep1(Request $request){
+
                     $resource_list = DB::table('resource')
                     ->select('resource_id') 
                     ->select('name')
-                    ->get();
+                     ->get();
                     if(session('e_id')){
-                        return view('faculty.pages.new_booking')->with('resource_list', $resource_list);
+                        $booking = $request->session()->get('booking');
+                        return view('faculty.pages.new_bookingstep1')->with('booking',$booking)->with('resource_list', $resource_list);
                     }
                     else{
                         return redirect()->back()->with('error','Unauthorised Access');
                     }
                 }
-                
+
+                public function postnew_bookingstep1(Request $request)
+                {
+
+                    $validatedData = $this->validate($request,[
+                        'event' => 'required',
+                        'date' => 'required|date_format:Y-m-d|after:today',
+                        'from-time' => 'required',
+                        'to-time' => 'required',
+                        'from-time' => 'date_format:H:i',
+                        'to-time' => 'date_format:H:i|after:from-time|before:18:00'
+
+                    ]);
+                    $booking = new booking;
+                    $userid = session('e_id');
+                    $cmsrole = cms_roles::where('e_id',$userid)->get();
+                    $resource_name = $request->input('resource');
+                    $resourceid = DB::select('select resource_id from resource where name = :name', ['name'=>$resource_name]);
+                    $booking->event_name = $request->input('event');
+                    $booking->event_date = $request->input('date');
+                    $booking->start_time = $request->input('from-time');
+                    $booking->end_time = $request->input('to-time');
+                    $booking->resource_id = $resourceid[0]->resource_id;
+                    $userinfo = DB::select('select email,first_name from staff where e_id = :e_id', ['e_id'=>$userid]);
+                    $booking->user_id = $userid;
+                    $booking->user_email = $userinfo[0]->email;
+                    $booking->user_name= $userinfo[0]->first_name;
+                    $request->session()->put('booking', $booking);
+                    return redirect('/staff/new_booking/2');
+
+                }
+
+                public function new_bookingstep2(Request $request){
+
+                    $resource_list = DB::table('resource')
+                    ->select('resource_id') 
+                    ->select('name')
+                     ->get();
+                    if(session('e_id')){
+                        $booking = $request->session()->get('booking');
+                        return view('faculty.pages.new_bookingstep2')->with('booking',$booking)->with('resource_list', $resource_list);
+                    }
+                    else{
+                        return redirect()->back()->with('error','Unauthorised Access');
+                    }
+                }
+
+                public function store(Request $request){
+                    $booking = new booking;
+                    $userid = session('e_id');
+                    $cmsrole = cms_roles::where('e_id',$userid)->get();
+                    $booking = $request->session()->get('booking');
+                    $booking->for_crowd = $request->input('class');
+                    $booking->expected_crowd = $request->input('crowd');
+                    $booking->guest = $request->input('guests');
+                    $booking->guest_designation = $request->input('designation');
+                    if(count($cmsrole)==0){
+                        $booking->save();
+                        return redirect('/staff/booking')->with('success','Booking Request Send');
+                    }
+                    else{
+                        if($cmsrole[0]->roles_id==32){
+                            $booking->save();
+                            return redirect('/staff/manage_application')->with('success','Booking Request Send');
+                        }
+                    }
+
+
+                }
+
+                public function redirectoption(){
+                    $userid= session('e_id');
+                    $userinfo= Faculty::where('e_id',$userid)->get();
+                    $roleinfo= cms_roles::where('e_id',$userid)->get();
+                    if($userinfo[0]->type==1){
+                        return redirect('/staff/booking');
+                    }
+                    elseif($roleinfo[0]->roles_id==33||$roleinfo[0]->roles_id==34){
+                        return redirect('/staff/booking');
+                    }
+                    else{
+                        return redirect('/staff/home');
+                    }
+                }
 
 
                 public function check_availability  (){
