@@ -144,7 +144,7 @@
                             <ul class=" nav nav-second-level" class="collapse" id="services">
                                 <li>
                                 <a href="{{ url ('/staff/manage_application') }}" ><i class="fa  fa-users fa-fw "></i>  Manage Applications</a>
-                                <a href="{{ url ('/staff/booking') }}" ><i class="fa  fa-users fa-fw "></i>  Book a Resource</a>
+                                <a href="{{ url ('/staff/new_booking/1') }}" ><i class="fa  fa-users fa-fw "></i>  Book a Resource</a>
                                 <a href="{{ url ('/staff/reports') }}" ><i class="fa  fa-users fa-fw "></i>  Reports</a>
                                 <a href="{{ url ('/staff/manage_users') }}" ><i class="fa  fa-users fa-fw "></i>  Manage Users</a>
                                 <a href="{{ url ('/staff/manage_resources') }}" ><i class="fa  fa-users fa-fw "></i>  Manage Resources</a>
