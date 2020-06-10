@@ -35,25 +35,20 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/attendance/faculty', 'FacultyController@facultyattendance');
     Route::get('search/', 'FacultyController@searchStudent');
     Route::get('/booking','FacultyController@book_resource');
-    Route::get('/new_booking','FacultyController@new_booking');
+    Route::get('/new_booking/1','FacultyController@new_bookingstep1');
+    Route::post('/validate/1', 'FacultyController@postnew_bookingstep1');
+    Route::get('/new_booking/2','FacultyController@new_bookingstep2');
     Route::get('/check_availability','FacultyController@check_availability');
     Route::get('booking/booking_data/{id}','FacultyController@booking_data')->name('booking_data');
-    Route::get('booking/resource_data/{id}','FacultyController@resource_data')->name('resource_data');
     Route::get('booking/history_data/{id}','FacultyController@bookinghist_data')->name('history_data');
-    Route::post('/store','BookingsController@store');
+    Route::post('/store','FacultyController@store');
     Route::post('/search','FacultyController@search');
-    Route::get('/manage_resources','FacultyController@manage_resources');
-    Route::get('/add_resources','FacultyController@add_resources');
-
-    Route::get('/reports','FacultyController@reports');
-    Route::get('/manage_users','FacultyController@manage_users');
- 
-    Route::post('resource_data','FacultyController@modify_resource');
-    Route::post('/add_resources','FacultyController@store_resource');
     Route::post('/searchadmin/1','FacultyController@searchapprovedapplications');
     Route::post('/searchadmin/0','FacultyController@searchnewapplications');
     Route::get('/application_data/{id}','FacultyController@application_data')->name('application_data');
     Route::post('/filter','FacultyController@filter');
+    Route::post('/filter/0','FacultyController@filterbookedresources');
+    Route::get('/redirect','FacultyController@redirectoption');
     Route::post('/filteradmin/1','FacultyController@filterapprovedapplication');
     Route::post('/filteradmin/0','FacultyController@filternewapplication');
     Route::get('/manage_application','FacultyController@manage_application');
@@ -61,8 +56,6 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/accept/{id}','FacultyController@accept')->name('accept');
     Route::get('/reject/{id}','FacultyController@reject')->name('reject');
     Route::get('/cancel/{id}','FacultyController@cancel')->name('cancel');
-
-    Route::get('/delete_resources/{id}','FacultyController@delete_resources')->name('delete_resources');
 });
 
 
@@ -80,3 +73,5 @@ Route::get('/logout', 'SessionController@logout');
 Route::get('/', 'SessionController@home');
 
 ?>
+
+
