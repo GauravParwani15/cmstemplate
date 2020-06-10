@@ -5,8 +5,8 @@ use DB;
 use Illuminate\Http\Request;
 use App\booking;
 use App\resource;
-use App\Faculty;
 use App\cms_roles;
+use App\Faculty;
 use App\Department;
 use App\Faculty_teaching_staff;
 use App\Student;
@@ -325,170 +325,184 @@ class FacultyController extends Controller
             return redirect()->back()->with('error','Unauthorised Access');
         }
     }
-    //clerk bookings
-
-    public function manage_resources(){
+    
+    public function book_resource(){
+        
         if(session('e_id')){
-            $resources = resource::all();
-            return view('faculty.pages.manage_resources')->with('resources',$resources);
+            $today_date = date('Y-m-d');
+            $userid = session('e_id');
+            $past_records = booking::where('user_id',$userid)->where('status',0)->where('event_date','<',$today_date)->get();
+            if(count($past_records) > 0){
+                foreach($past_records as $past_record){
+                    $past_record->status=2;
+                    $past_record->save();
+                }
+                $bookings = booking::where('user_id',$userid)->where('event_date','>=',$today_date)->with('resource')->get();
+                $bookings_hist = booking::where('user_id',$userid)->where('event_date','<=',$today_date)->with('resource')->get();
+                $resources = resource::all();
+                return view('faculty.pages.resource_booking')->with('bookings',$bookings)->with('bookings_hist',$bookings_hist)->with('resources',$resources);
+            }
+            else{
+                $bookings = booking::where('user_id',$userid)->where('event_date','>=',$today_date)->with('resource')->get();
+                $bookings_hist = booking::where('user_id',$userid)->where('event_date','<=',$today_date)->with('resource')->get();
+                $resources = resource::all();
+                return view('faculty.pages.resource_booking')->with('bookings',$bookings)->with('bookings_hist',$bookings_hist)->with('resources',$resources);
+            }
         }
         else{
             return redirect()->back()->with('error','Unauthorised Access');
         }
     }
 
-
-    public function add_resources(){
+    public function new_bookingstep1(Request $request){
+        
+        $resource_list = DB::table('resource')
+        ->select('resource_id') 
+        ->select('name')
+         ->get();
         if(session('e_id')){
-            $resources = resource::all();
-            return view('faculty.pages.add_resources')->with('resources',$resources);
+            $booking = $request->session()->get('booking');
+            return view('faculty.pages.new_bookingstep1')->with('booking',$booking)->with('resource_list', $resource_list);
         }
         else{
             return redirect()->back()->with('error','Unauthorised Access');
         }
     }
 
+    public function postnew_bookingstep1(Request $request)
+    {
 
+        $validatedData = $this->validate($request,[
+            'event' => 'required',
+            'date' => 'required|date_format:Y-m-d|after:today',
+            'from-time' => 'required',
+            'to-time' => 'required',
+            'from-time' => 'date_format:H:i',
+            'to-time' => 'date_format:H:i|after:from-time|before:18:00'
 
-    public function store_resource(Request $request){
-       
-        if(session('e_id')){
-            $resource = new resource;
-            $resource->name=$request->input('resource_name');
-            $resource->capacity=$request->input('capacity');
-            $resource->facilities=$request->input('features');
-            $resource->save();
-            //DB::table('resource')->insert($resource);
-            return redirect('/staff/manage_resources')->with('success','Resource Added');
-        }
-        else{
-            return redirect('/staff/manage_resources')->with('success','Changes are done');
-        }
+        ]);
+        $booking = new booking;
+        $userid = session('e_id');
+        $cmsrole = cms_roles::where('e_id',$userid)->get();
+        $resource_name = $request->input('resource');
+        $resourceid = DB::select('select resource_id from resource where name = :name', ['name'=>$resource_name]);
+        $booking->event_name = $request->input('event');
+        $booking->event_date = $request->input('date');
+        $booking->start_time = $request->input('from-time');
+        $booking->end_time = $request->input('to-time');
+        $booking->resource_id = $resourceid[0]->resource_id;
+        $userinfo = DB::select('select email,first_name from staff where e_id = :e_id', ['e_id'=>$userid]);
+        $booking->user_id = $userid;
+        $booking->user_email = $userinfo[0]->email;
+        $booking->user_name= $userinfo[0]->first_name;
+        $request->session()->put('booking', $booking);
+        return redirect('/staff/new_booking/2');
+
     }
 
-    public function modify_resource(Request $request){
-       
-
+    public function new_bookingstep2(Request $request){
+        
+        $resource_list = DB::table('resource')
+        ->select('resource_id') 
+        ->select('name')
+         ->get();
         if(session('e_id')){
-        //App\Flight::where(session('resource_id'));
-            $resource = resource::find(session('resource_id'));
-            $resource->name=$request->input('resource_name');
-            $resource->capacity=$request->input('capacity');
-            $resource->facilities=$request->input('features');
-            $resource->save();
-
-            return redirect('/staff/manage_resources')->with('success','Changes are done');
-        }
-
-        else{
-            return redirect()->back()->with('error','Unauthorised Access');
-        }
-    }
-
-    public function reports(){
-        if(session('e_id')){
-            return view('faculty.pages.reports');
-        }
-        else{
-            return redirect()->back()->with('error','Unauthorised Access');
-        }
-    }
-
-    public function manage_users(){
-        if(session('e_id')){
-            return view('faculty.pages.manage_users');
+            $booking = $request->session()->get('booking');
+            return view('faculty.pages.new_bookingstep2')->with('booking',$booking)->with('resource_list', $resource_list);
         }
         else{
             return redirect()->back()->with('error','Unauthorised Access');
         }
     }
 
-    // user bookings
-                public function book_resource(){
-                    
-                    if(session('e_id')){
-                        $today_date = date('Y-m-d');
-                        $userid = session('e_id');
-                        $bookings = booking::where('user_id',$userid)->where('event_date','>=',$today_date)->with('resource')->get();
-                        $bookings_hist = booking::where('user_id',$userid)->where('event_date','<=',$today_date)->with('resource')->get();
-                        $resources = resource::all();
-                        return view('faculty.pages.resource_booking')->with('bookings',$bookings)->with('bookings_hist',$bookings_hist)->with('resources',$resources);
-                    }
-                    else{
-                        return redirect()->back()->with('error','Unauthorised Access');
-                    }
-                }
-
-                public function new_booking(){
-                    
-                    $resource_list = DB::table('resource')
-                    ->select('resource_id') 
-                    ->select('name')
-                    ->get();
-                    if(session('e_id')){
-                        return view('faculty.pages.new_booking')->with('resource_list', $resource_list);
-                    }
-                    else{
-                        return redirect()->back()->with('error','Unauthorised Access');
-                    }
-                }
-                
+    public function store(Request $request){
+        $booking = new booking;
+        $userid = session('e_id');
+        $cmsrole = cms_roles::where('e_id',$userid)->get();
+        $booking = $request->session()->get('booking');
+        $booking->for_crowd = $request->input('class');
+        $booking->expected_crowd = $request->input('crowd');
+        $booking->guest = $request->input('guests');
+        $booking->guest_designation = $request->input('designation');
+        if(count($cmsrole)==0){
+            $booking->save();
+            return redirect('/staff/booking')->with('success','Booking Request Send');
+        }
+        else{
+            if($cmsrole[0]->roles_id==32){
+                $booking->save();
+                return redirect('/staff/manage_application')->with('success','Booking Request Send');
+            }
+        }
 
 
-                public function check_availability  (){
+    }
 
-                    //  $resource_list = DB::table('resource')
-                    // ->select('resource_id') 
-                    // ->select('name')
-                    // ->get();
-                    // $booking_list = DB::table('booking')
-                    // ->select('booking_id')
-                    // ->select('resource')   
-                    // ->select('event_date') 
-                    // ->select('start_time') 
-                    // ->select('end_time')    
-                    // ->get();
+    public function redirectoption(){
+        $userid= session('e_id');
+        $userinfo= Faculty::where('e_id',$userid)->get();
+        $roleinfo= cms_roles::where('e_id',$userid)->get();
+        if($userinfo[0]->type==1){
+            return redirect('/staff/booking');
+        }
+        elseif($roleinfo[0]->roles_id==33||$roleinfo[0]->roles_id==34){
+            return redirect('/staff/booking');
+        }
+        else{
+            return redirect('/staff/home');
+        }
+    }
+    
 
-                    if(session('e_id')){
-                        $accepted=1;
-                        $booking_list=booking::where('status','=',$accepted)->get();
-                        //$bookings_list = booking::where('event_date','<=',$today_date)->with('resource')->get();
-                        $resource_list = resource::all();
-                        //$resource_name=resource::where('resource_id',$booking_list->name);
-                        $booking_list=$booking_list->sortBy('event_date');
+    public function check_availability(){
+        
+        if(session('e_id')){
+            $accepted=1;
+            $booking_list=booking::where('status','=',$accepted)->get();
+            $resource_list = resource::all();
+            $booking_list=$booking_list->sortBy('event_date');
 
-                        return view('faculty.pages.Booked_resources')->with('resource_list', $resource_list)->with('booking_list', $booking_list);
-                    }
-                    else{
-                        return redirect()->back()->with('error','Unauthorised Access');
-                    }
-                }
+            return view('faculty.pages.Booked_resources')->with('resource_list', $resource_list)->with('booking_list', $booking_list);
+        }
+        else{
+            return redirect()->back()->with('error','Unauthorised Access');
+        }
+    }
 
-                public function booking_data($booking_id){
-                    
-                    if(session('e_id')){
-                        $data = booking::where('booking_id',$booking_id)->with('resource')->get(); 
-                        return view('faculty.pages.booking_data')->with('data',$data);
-                    }
-                    else{
-                        return redirect()->back()->with('error','Unauthorised Access');
-                    }
-                }
+    public function filterbookedresources(Request $request){
+        $filterdate = $request->input('filterdate');
+        $filterresource = $request->input('filterresource');
+        if(is_null($filterresource)){
+            $booking_list = booking::where('event_date','>=',$filterdate)->where('status',1)->with('resource')->get();
+            $booking_list=$booking_list->sortBy('event_date');
+            return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list);
+        }
+        elseif(is_null($filterdate)){
+            $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
+            $booking_list = booking::where('resource_id',$resourceid[0]->resource_id)->where('status',1)->with('resource')->get();
+            $booking_list=$booking_list->sortBy('event_date');
+            return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list);
+        }
+        else{
+            $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
+            $booking_list = booking::where('resource_id',$resourceid[0]->resource_id)->where('event_date','>=',$filterdate)->where('status',1)->with('resource')->get();
+            $booking_list=$booking_list->sortBy('event_date');
+            return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list);
+        }
+    }
 
-                public function resource_data($resource_id){
-                    
-                    if(session('e_id')){
-                        $data = resource::where('resource_id',$resource_id)->get(); 
-                        session(['resource_id' => $resource_id]);
-                        return view('faculty.pages.resource_data')->with('data',$data);
-                    }
-                    else{
-                        return redirect()->back()->with('error','Unauthorised Access');
-                    }
-                }
+    public function booking_data($booking_id){
+        
+        if(session('e_id')){
+            $data = booking::where('booking_id',$booking_id)->with('resource')->get(); 
+            return view('faculty.pages.booking_data')->with('data',$data);
+        }
+        else{
+            return redirect()->back()->with('error','Unauthorised Access');
+        }
+    }
 
-
-                public function search(Request $request){
+    public function search(Request $request){
         $this->validate($request,[
             'search' => 'required'
         ]);
@@ -607,12 +621,10 @@ class FacultyController extends Controller
                     $past_record->save();
                 }
                 $applications= booking::where('status',0)->with('resource')->get();
-                $applications=$applications->sortBy('event_date');
                 return view('faculty.pages.manage_application')->with('applications',$applications);
             }
             else{
                 $applications= booking::where('status',0)->with('resource')->get();
-                $applications=$applications->sortBy('event_date');
                 return view('faculty.pages.manage_application')->with('applications',$applications);
             }
                 
@@ -686,24 +698,6 @@ class FacultyController extends Controller
             return redirect()->back()->with('error','Unauthorised Access');
         }
     }
-
-
-    public function delete_resources($resource_id){
-        if (session('e_id')){
-            //$data = booking::where('booking_id',$booking_id)->with('resource')->get();
-            DB::table('booking')->where('resource_id','=',$resource_id)->delete();
-            DB::table('resource')->where('resource_id', '=', $resource_id)->delete();
-
-            $resources = resource::all();
-            return view('faculty.pages.manage_resources')->with('resources',$resources);
-        }
-        else{
-            return redirect()->back()->with('error','Unauthorised Access');
-        }
-    }
-
-
-                
 
     public function defaulter_list() 
     { 
