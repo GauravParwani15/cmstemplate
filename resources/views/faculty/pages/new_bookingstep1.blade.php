@@ -43,8 +43,8 @@
 </div>
 </div> -->
  <ul class="list-group list-group-horizontal">
-        <li {{ (Request::is('/staff/booking') ? 'class="active"' : '') }}>
-            <a href="{{ url ('/staff/booking') }}"><button class="btn btn-primary">Back</button></a>
+        <li {{ (Request::is('/staff/redirect') ? 'class="active"' : '') }}>
+            <a href="{{ url ('/staff/redirect') }}"><button class="btn btn-primary">Back To dashboard</button></a>
         </li>
         
     </ul>
@@ -55,7 +55,7 @@
                 <div class="">
                     <h2 id="heading" class="">Book a Resource</h2>
                     <!-- <p>Fill all form field to go to next step</p> -->
-                    {!! Form::open(['id'=>'msform', 'action' => 'BookingsController@store', 'method'=>'POST']) !!} 
+                    {!! Form::open(['id'=>'msform', 'action' => 'FacultyController@postnew_bookingstep1', 'method'=>'POST']) !!} 
                         <!-- progressbar -->
                         <!-- <div>
                         <ul id="progressbar" class="ml-5  pl-5">
@@ -80,7 +80,7 @@
                                         <h2 class="steps">Step 1 - 4</h2>
                                     </div>
                                 </div>  -->
-                                <label class="fieldlabels">Event Name</label> <input type="text" name="event" placeholder="Event Name" /> 
+                                <label class="fieldlabels">Event Name</label> <input class="validate-input" data-validate = "Please enter the Event name" type="text" name="event" placeholder="Event Name" /> 
                                 <div class="dropdown pb-5">
                                     <label class="fieldlabels">Select a resource you want to book</label><br>
                                         <select class='form-control' name='resource' id='resource'>
@@ -93,13 +93,10 @@
                                 <label class="fieldlabels">From</label> <input type="time" name="from-time" placeholder="time" />
                                 <label class="fieldlabels">To</label> <input type="time" name="to-time" placeholder="time" />
                             </div>
-                            <input type="button" name="next" class="next action-button" value="Next" />
+                            <button type="submit" form="msform" class="action-button" value="Submit">Next</button>
                         
                         </fieldset>  
                         <fieldset>
-                            <div class="form-card">
-                                <label class="fieldlabels">For class</label> <input type="text" name="class" placeholder="For class" /> <label class="fieldlabels">Expected Crowd</label> <input type="number" name="crowd" placeholder="Expected Crowd" /> <label class="fieldlabels">Expected Guests/Speaker/company name</label> <input type="text" name="guests" placeholder="Guests/Speaker/Company name" /> <label class="fieldlabels">Speaker/Guests with Designation and Company</label> <input type="text" name="designation" placeholder="Designation/Company name" />
-                            </div> <button type="submit" form="msform" class="action-button" value="Submit">Submit</button> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <!-- <fieldset>
                             <div class="form-card">
