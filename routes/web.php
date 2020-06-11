@@ -48,6 +48,7 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/reports','FacultyController@reports');
     Route::get('/manage_users','FacultyController@manage_users');
  
+    Route::post('/filter/0','FacultyController@filterbookedresources');
     Route::post('resource_data','FacultyController@modify_resource');
     Route::post('/add_resources','FacultyController@store_resource');
     Route::post('/searchadmin/1','FacultyController@searchapprovedapplications');

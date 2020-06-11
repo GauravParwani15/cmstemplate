@@ -40,48 +40,31 @@
     <div class="container">
         <div class="pt-5" style="background-color:white;">
             <div class="card" style="border: none;">
-                <h3>Booked Resources</h3>
+                <h2>Booked Resources</h2><br><br>
                 <div class="card-body">
                     <table class="">
-                        <tr>
-                            <th><input type="text" class="<div class="" name=" search" placeholder="search by title"
-                                    autocomplete="off"></th>
-                            <th></th>
-                            <th></th>   
-                            <div class="">
-                                <th class="pl-5">
-                                    <p style="font-size:25px;font-weight: lighter;">Filter by:</p>
-                                </th>
-                                <th class="pl-0">
-                                    <div class="dropdown ">
-                                    <label class="fieldlabels">resource</label><br>
-                                        <select class='form-control' name='resource' id='resource'>
+                        <th></th>
+                                <th></th>
+                                <th></th>
+                                    <th>
+                                        {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filterbookedresources', 'method'=>'POST']) !!}
+                                        <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Date:</label>
+                                        <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" />
+                                         <td>
+                                    <label style="font-size:25px;font-weight: lighter;">Filter Resource:</label>  </td>
+                                   <div class="dropdown ">
+                                   <td> <select class='form-control' id="filterresource" name="filterresource">
                                             @foreach($resource_list as $resource)
                                             <option value="{{ $resource->name}}">{{ $resource->name }}</option>
                                             @endforeach  
                                         </select>
                                     </div> 
-                                    <!-- <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                            Resources
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                             <ul>
-                                        <li class=" dropdown-item" ><a>Auditorium</a></li>
-                                        <li class=" dropdown-item"><a>Smart Classroom (505)</a></li>   
-                                    </ul>
-                                        </div>
-                                </th>
-                            </div> -->
-                </div>
-                <th class="pl-5"><button class="btn btn-light pl-5">Apply</button></th>
-                <!-- <a href="./newapplicaion.html"><button type="button" class="btn btn-info float-right">New
-                        Applications</button>
-                </a> -->
-                </tr>
-                </table>
+                                    </td>
+                                       <th class="pl-5"> <td><button class="btn btn-success pl-5">Apply</button>  </td> </th>
+                                        {!! Form::close() !!}
+                                    </th>       
+                        </tr>
+                    </table>
             </div>
             <!-- end of header options -->
             <!-- Table of approved applications -->

@@ -36,10 +36,12 @@
     {!! Form::open(['id'=>'msform', 'action' => 'FacultyController@modify_resource', 'method'=>'POST']) !!} 
     <div class = "well">
         <table class="table" id="table">
+            <thead>
+                <th>
+                    <td colspan="6" class=""><h3>Please add details again</h3></td>
+                </th>
+            </thead>
             <tbody>
-                <tr>
-                    <td colspan="6" class="text-center">Please add details again</td>
-                </tr>
                 <tr>
                     <td colspan="3">Resource Name:-{{$data[0]->name}}</td>
                     <td colspan="3"><input type="text" name="resource_name" placeholder="{{$data[0]->name}}" ></input></td>

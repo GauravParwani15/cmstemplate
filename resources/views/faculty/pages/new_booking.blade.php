@@ -80,7 +80,7 @@
                                         <h2 class="steps">Step 1 - 4</h2>
                                     </div>
                                 </div>  -->
-                                <label class="fieldlabels">Event Name</label> <input type="text" name="event" placeholder="Event Name" /> 
+                                <label class="fieldlabels">Event Name</label> <input type="text" name="event" id="events" placeholder="Event Name" required/> 
                                 <div class="dropdown pb-5">
                                     <label class="fieldlabels">Select a resource you want to book</label><br>
                                         <select class='form-control' name='resource' id='resource'>
@@ -89,17 +89,20 @@
                                             @endforeach  
                                         </select>
                                 </div> 
-                                <label class="fieldlabels">Date</label> <input type="date" name="date" placeholder="Date" />
-                                <label class="fieldlabels">From</label> <input type="time" name="from-time" placeholder="time" />
-                                <label class="fieldlabels">To</label> <input type="time" name="to-time" placeholder="time" />
+                                <label class="fieldlabels">Date</label> <input type="date" name="date" id="date" placeholder="Date" required/>
+                                <label class="fieldlabels">From</label> <input type="time" name="from-time" id="from-time" placeholder="time" />
+                                <label class="fieldlabels">To</label> <input type="time" name="to-time" id="to-time" placeholder="time" />
                             </div>
                             <input type="button" name="next" class="next action-button" value="Next" />
                         
                         </fieldset>  
                         <fieldset>
                             <div class="form-card">
-                                <label class="fieldlabels">For class</label> <input type="text" name="class" placeholder="For class" /> <label class="fieldlabels">Expected Crowd</label> <input type="number" name="crowd" placeholder="Expected Crowd" /> <label class="fieldlabels">Expected Guests/Speaker/company name</label> <input type="text" name="guests" placeholder="Guests/Speaker/Company name" /> <label class="fieldlabels">Speaker/Guests with Designation and Company</label> <input type="text" name="designation" placeholder="Designation/Company name" />
-                            </div> <button type="submit" form="msform" class="action-button" value="Submit">Submit</button> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                <label class="fieldlabels">For class</label> <input type="text" name="class" id="for_class" placeholder="For class" required/> 
+                                <label class="fieldlabels">Number of Expected Crowd</label> <input type="number" name="crowd" id="expected_crowd" placeholder="Expected Crowd" required/> 
+                                <label class="fieldlabels">Expected Guests/Speaker/company name</label> <input type="text" name="guests" id="speaker" placeholder="Guests/Speaker/Company name" required/> 
+                                <label class="fieldlabels">Speaker/Guests with Designation and Company</label> <input type="text" name="designation" id="designation" placeholder="Designation/Company name" required/>
+                            </div> <button type="submit" form="msform" class="submit action-button" value="Submit">Submit</button> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <!-- <fieldset>
                             <div class="form-card">
@@ -133,9 +136,6 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
    <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
-    <!-- <script src="{{ URL::asset('js/style.js') }}"></script> -->
-  <!-- <script src="{{ URL::asset('js/style.js') }}" > -->
-  <!-- <script src="../../../../../public/js/script.js"></script> -->
 </body>
 
 @stop

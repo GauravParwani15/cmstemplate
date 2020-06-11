@@ -106,25 +106,33 @@
                 <h3>Booking status</h3>
                 <div class="card-body">
                     <table class="">
-                        <tr>
-                            <div class="container">
-                            {!! Form::open(['id'=>'searchform', 'action' => 'FacultyController@search', 'method'=>'POST']) !!}
-                            <th><div class="input-group col-xs-8"><input type="text" class="form-control input-sm" name="search" placeholder="search by title" />
-                                <div class="input-group-btn"><button type="submit" form="searchform" class="btn btn-default input-sm action-button" value="Submit"><i class="glyphicon glyphicon-search"></button></div></div></th>
+                         <tr>
+                        <div class="container">
+                            {!! Form::open(['id'=>'searchform', 'action' => 'FacultyController@searchnewapplications', 'method'=>'POST']) !!}
+                            <th><div class="input-group col-s-8"><input type="text" class="form-control input-sm" name="search" placeholder="search by title"/> 
+                                <div class="input-group-btn"><button type="submit" form="searchform" class="btn btn-default input-sm action-button" value="Submit"><i class="glyphicon glyphicon-search"></button></td>
+                                </div></div></th>
                             {!! Form::close() !!}
                             </div>
                             <th></th>
                             <th></th>
                                 <th>
                                     {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filter', 'method'=>'POST']) !!}
-                                    <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter date after  </label>
-                                    <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" />
-                                    <label for="filterresource" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Resource:</label>
-                                    <input style ="display:block;" type="text" class="col-xs-1 form-control input-sm" id="filterresource" name="filterresource" placeholder="Resource" />
-                                    <button type="submit" form="filterform" class="btn btn-default input-sm action-button" value="Submit">Apply</button>
+                                   <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter date after:</label></td>
+                                    <td> <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" /> </td>
+                                   <td> <label style="font-size:25px;font-weight: lighter;">Filter Resource:</label>  </td>
+                                   <div class="dropdown ">
+                                   <td> <select class='form-control' id="filterresource" name="filterresource">
+                                            @foreach($resource_list as $resource)
+                                            <option value="{{ $resource->name}}">{{ $resource->name }}</option>
+                                            @endforeach  
+                                        </select>
+                                    </div> 
+                                    </td>
+                                       <th class="pl-5"> <td><button class="btn btn-success pl-5">Apply</button>  </td> </th>
                                     {!! Form::close() !!}
                                 </th>
-                        </tr>
+                    </tr> 
                 </table>
             </div>
             <!-- end of header options -->

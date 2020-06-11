@@ -40,7 +40,7 @@
 
 </style>
     <!-- Details Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content" style="background-color: #e7e1e1;">
@@ -76,13 +76,13 @@
                 <div class="modal-footer ">
                     <button class="btn btn-danger float-right">Reject</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                    
                 </div>
             </div>
         </div>
     </div>
     
-    
+     -->
     <!-- Details modal end -->
 
 
@@ -97,11 +97,11 @@
     <div class="pt-5" style="background-color:white;">
         <div class="card" style="border: none;">
             <div class="card-body">
-            <table class="">
+            <table class="text-center">
                 <tr>
                     <div class="container">
                         {!! Form::open(['id'=>'searchform', 'action' => 'FacultyController@searchapprovedapplications', 'method'=>'POST']) !!}
-                        <th><div class="input-group col-xs-8"><input type="text" class="form-control input-sm" name="search" placeholder="search by title" />
+                        <th><div class="input-group col-s-8"><input type="text" class="form-control input-sm" name="search" placeholder="search by title" />
                             <div class="input-group-btn"><button type="submit" form="searchform" class="btn btn-default input-sm action-button" value="Submit"><i class="glyphicon glyphicon-search"></button></div></div></th>
                         {!! Form::close() !!}
                         </div>
@@ -109,11 +109,11 @@
                         <th></th>
                             <th>
                                 {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filterapprovedapplication', 'method'=>'POST']) !!}
-                                <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Date:</label>
-                                <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" />
-                                <label for="filterresource" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Resource:</label>
-                                <input style ="display:block;" type="text" class="col-xs-1 form-control input-sm" id="filterresource" name="filterresource" placeholder="Resource" />
-                                <button type="submit" form="filterform" class="btn btn-default input-sm action-button" value="Submit">Apply</button>
+                               <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Date:</label>  </td>
+                               <td> <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" /> </td>
+                               <td> <label for="filterresource" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Resource:</label> </td>
+                               <td> <input style ="display:block;" type="text" class="col-xs-1 form-control input-sm" id="filterresource" name="filterresource" placeholder="Resource" /> </td>
+                               <td> <button type="submit" form="filterform" class="btn btn-success input-sm action-button" value="Submit">Apply</button> </td>
                                 {!! Form::close() !!}
                             </th>
                 </tr> 
@@ -122,7 +122,7 @@
             <!-- end of header options -->
             <!-- Table of approved applications -->
 
-            <table class="table table-hover table-striped">
+            <table class="table text-left table-hover table-striped">
                 <thead>
                     <tr>
                         <th scope="col">Title</th>

@@ -7,7 +7,40 @@ $(document).ready(function () {
 
     setProgressBar(current);
 
+    
+    function CompareDate() {
+        //var todayDate = new Date(); //Today Date    
+        if (todayDate >= date) {
+            alert("hello");
+        } else {
+            alert("You picked a date before than today");
+            //CompareDate();
+        }
+    }
     $(".next").click(function () {
+
+        var events = document.getElementById("events").value;
+        var date = document.getElementById("date").value;
+        var todayDate = new Date();
+        todayDate = todayDate.getFullYear() + '-0' + (todayDate.getMonth() + 1) + '-' + todayDate.getDate();
+        var from_time=document.getElementById("from-time").value;
+        var to_time=document.getElementById("to-time").value;
+
+        console.log(date);
+        console.log(todayDate);
+        if (!events) {
+            alert("Event name required");
+        }
+        else if(!date){
+            alert("Event date required");
+        }
+        else if (date < todayDate){
+            alert("selected date should be after today");
+        }
+        else if((from_time=="")||(to_time=="")||(from_time>to_time)){
+            alert("choose timings properly");
+        }
+        else{
 
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
@@ -32,6 +65,26 @@ $(document).ready(function () {
             duration: 500
         });
         setProgressBar(++current);
+    }
+    });
+
+    $(".submit").click(function() {
+        var for_class = document.getElementById("for_class").value;
+        var expected_crowd = document.getElementById("expectd_crowd").value;
+        var speaker = document.getElementById("speaker").value;
+        var designation = document.getElementById("designation").value;
+        if (!for_class) {
+            alert("class attending required");
+        }
+        else if(!expected_crowd){
+            alert("number of expected crowd is not set");
+        }
+        else if (!speaker) {
+            alert("Speaker is not set");
+        }
+        else if (!designation) {
+            alert("designation of the speaker is not given");
+        }
     });
 
     $(".previous").click(function () {
