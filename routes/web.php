@@ -35,14 +35,12 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/attendance/faculty', 'FacultyController@facultyattendance');
     Route::get('search/', 'FacultyController@searchStudent');
     Route::get('/booking','FacultyController@book_resource');
-    Route::get('/new_booking/1','FacultyController@new_bookingstep1');
-    Route::post('/validate/1', 'FacultyController@postnew_bookingstep1');
-    Route::get('/new_booking/2','FacultyController@new_bookingstep2');
+    Route::get('/new_booking','FacultyController@new_booking');
     Route::get('/check_availability','FacultyController@check_availability');
     Route::get('booking/booking_data/{id}','FacultyController@booking_data')->name('booking_data');
     Route::get('booking/resource_data/{id}','FacultyController@resource_data')->name('resource_data');
     Route::get('booking/history_data/{id}','FacultyController@bookinghist_data')->name('history_data');
-    Route::post('/store','FacultyController@store');
+    Route::post('/store','BookingsController@store');
     Route::post('/search','FacultyController@search');
     Route::get('/manage_resources','FacultyController@manage_resources');
     Route::get('/add_resources','FacultyController@add_resources');
