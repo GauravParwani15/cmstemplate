@@ -92,6 +92,7 @@
     <ul class="list-group list-group-horizontal ">
         <li >
             <a href="{{ url ('/staff/approved_application') }}"><button class="btn btn-primary float-right">Approved Applications</button></a>
+            <a href="{{ url ('/staff/rejected_application') }}"><button class="btn btn-primary float-right">Rejected Applications</button></a>
         </li>
     </ul>
     <div class="pt-5" style="background-color:white;">
@@ -99,13 +100,6 @@
                <div class="card-body">
                 <table class="">
                     <tr>
-                        <div class="container">
-                            {!! Form::open(['id'=>'searchform', 'action' => 'FacultyController@searchnewapplications', 'method'=>'POST']) !!}
-                            <th><div class="input-group col-s-8"><input type="text" class="form-control input-sm" name="search" placeholder="search by title"/> 
-                                <div class="input-group-btn"><button type="submit" form="searchform" class="btn btn-default input-sm action-button" value="Submit"><i class="glyphicon glyphicon-search"></button></td>
-                                </div></div></th>
-                            {!! Form::close() !!}
-                            </div>
                             <th></th>
                             <th></th>
                                 <th>
