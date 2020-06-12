@@ -56,9 +56,11 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/application_data/{id}','FacultyController@application_data')->name('application_data');
     Route::post('/filter','FacultyController@filter');
     Route::post('/filteradmin/1','FacultyController@filterapprovedapplication');
+    Route::post('/filteradmin/2','FacultyController@filterrejectedapplication');
     Route::post('/filteradmin/0','FacultyController@filternewapplication');
     Route::get('/manage_application','FacultyController@manage_application');
     Route::get('/approved_application', 'FacultyController@approved_application');
+    Route::get('/rejected_application', 'FacultyController@rejected_application');
     Route::get('/accept/{id}','FacultyController@accept')->name('accept');
     Route::get('/reject/{id}','FacultyController@reject')->name('reject');
     Route::get('/cancel/{id}','FacultyController@cancel')->name('cancel');
