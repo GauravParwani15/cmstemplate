@@ -48,11 +48,11 @@
                     <td colspan="3">Resource:-{{$data[0]->resource->name}}</td>
                 </tr>
                 <tr>
-                    <td colspan="3">date: {{$data[0]->event_date}}</td>
+                    <td colspan="3">Date: {{$data[0]->event_date}}</td>
                     <td colspan="3">Time: {{$data[0]->start_time}}-{{$data[0]->end_time}}</td>
                 </tr>
                 <tr>
-                    <td colspan="3">for class: {{$data[0]->for_crowd}}</td>
+                    <td colspan="3">For class: {{$data[0]->for_crowd}}</td>
                     <td colspan="3">Expected guests/speaker/company name: {{$data[0]->guest}}</td>
                 </tr>
                 <tr>
