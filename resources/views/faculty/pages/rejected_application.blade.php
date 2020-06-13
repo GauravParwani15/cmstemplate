@@ -1,7 +1,7 @@
 @extends('faculty.layouts.dashboard')
 @section('page_heading','Resource Booking')
 @section('section')
-                 
+
 
 
 
@@ -29,15 +29,11 @@
   table {
   width: 90%;}
 }
-
 /* if the browser window is at least 1000px-s wide: */
-
-
 @media screen and (max-width: 500px) {
   table {
   width: 30%;}
 }
-
 </style>
     <!-- Details Modal -->
     <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -87,43 +83,37 @@
 
 
 
-    <ul>
-        <li><a href="{{ url ('/staff/manage_application') }}"><button type="button" class="btn btn-primary float-right" >New Applications</button></a>
-         <a href="{{ url ('/staff/rejected_application') }}"><button class="btn btn-primary float-right">Rejected Applications</button></a>
-    </li>
-    </ul>
+
 
 <div class="container">
-    
-
+    <h1>Rejected Applications</h1>
+    <ul class="list-group list-group-horizontal ">
+        <li>
+            <a href="{{ url ('/staff/manage_application') }}"><button type="button" class="btn btn-primary float-right" >New Applications</button></a>
+            <a href="{{ url ('/staff/approved_application') }}"><button class="btn btn-primary float-right">Accepted Applications</button></a>
+        </li>
+    </ul>
     <div class="pt-5" style="background-color:white;">
         <div class="card" style="border: none;">
             <div class="card-body">
-                <h1>Approved Applications</h1><br>
             <table class="text-center">
                 <tr>
-                    <!-- <div class="container">
-                        {!! Form::open(['id'=>'searchform', 'action' => 'FacultyController@searchapprovedapplications', 'method'=>'POST']) !!}
-                        <th><div class="input-group col-s-8"><input type="text" class="form-control input-sm" name="search" placeholder="search by title" />
-                            <div class="input-group-btn"><button type="submit" form="searchform" class="btn btn-default input-sm action-button" value="Submit"><i class="glyphicon glyphicon-search"></button></div></div></th>
-                        {!! Form::close() !!}
-                        </div> -->
                         <th></th>
                         <th></th>
                             <th>
-                                {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filterapprovedapplication', 'method'=>'POST']) !!}
-                              <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter date after:</label></td>
-                                    <td> <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" /> </td>
-                                   <td> <label style="font-size:20px;font-weight: lighter;">Filter Resource:</label>  </td>
-                                   <div class="dropdown ">
-                                   <td> <select class='form-control' id="filterresource" name="filterresource">
-                                            @foreach($resource_list as $resource)
-                                            <option value="{{ $resource->name}}">{{ $resource->name }}</option>
-                                            @endforeach  
-                                        </select>
-                                    </div> 
-                                    </td>
-                                       <th class="pl-5"> <td><button class="btn btn-success pl-5">Apply</button>  </td> </th>
+                                {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filterrejectedapplication', 'method'=>'POST']) !!}
+                               <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Date:</label>  </td>
+                               <td> <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" /> </td>
+                               <td> <label for="filterresource" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter By Resource:</label> </td>
+                               <div class="dropdown ">
+                                <td> <select class='form-control' id="filterresource" name="filterresource">
+                                         @foreach($resource_list as $resource)
+                                         <option value="{{ $resource->name}}">{{ $resource->name }}</option>
+                                         @endforeach  
+                                     </select>
+                                 </div> 
+                                 </td>
+                               <td> <button type="submit" form="filterform" class="btn btn-success input-sm action-button" value="Submit">Apply</button> </td>
                                 {!! Form::close() !!}
                             </th>
                 </tr> 
@@ -145,12 +135,12 @@
                 <tbody>
                     @foreach($applications as $application)
                     <tr>
-                        <td><a href= "{{route('application_data',['id'=>$application->booking_id])}}">{{$application->event_name}}</a></td>
+                        <td>{{$application->event_name}}</td>
                         <td>{{$application->resource->name}}</td>
                         <td>{{$application->event_date}}</td>
                         <td>{{$application->start_time}}-{{$application->end_time}}</td>
-                         <td><a href= "{{route('application_data',['id'=>$application->booking_id])}}"><button type="button" onclick="" type="button" class="btn btn-warning">Details</button></a></td>
-                        <td><button type="button" class="btn btn-danger" onclick="window.location='{{route('cancel',['id'=>$application->booking_id])}}'">Cancel Application</button></td>
+                        <td><a href= "{{route('application_data',['id'=>$application->booking_id])}}"><button type="button" onclick="" type="button" class="btn btn-warning">Details</button></a></td>
+                        <td><button type="button" class="btn btn-success" onclick="window.location='{{route('accept',['id'=>$application->booking_id])}}'">Re-approve Application</button></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -164,6 +154,5 @@
     todayDate = todayDate.getFullYear() + '-0' + (todayDate.getMonth() + 1) + '-' + todayDate.getDate();
     $('#filterdate').attr('min', todayDate);
 </script>
-
 
 @stop

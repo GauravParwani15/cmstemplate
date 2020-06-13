@@ -7,16 +7,7 @@
 
 <head>
     <title>Booking status</title>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script> -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
@@ -103,26 +94,27 @@
     <div class="container">
         <div class="pt-5" style="background-color:white;">
             <div class="card" style="border: none;">
-                <h3>Booking status</h3>
+                <h2>Booking status</h2><br>
                 <div class="card-body">
                     <table class="">
                          <tr>
-                        <div class="container">
+                        <!-- <div class="container">
                             {!! Form::open(['id'=>'searchform', 'action' => 'FacultyController@searchnewapplications', 'method'=>'POST']) !!}
                             <th><div class="input-group col-s-8"><input type="text" class="form-control input-sm" name="search" placeholder="search by title"/> 
                                 <div class="input-group-btn"><button type="submit" form="searchform" class="btn btn-default input-sm action-button" value="Submit"><i class="glyphicon glyphicon-search"></button></td>
                                 </div></div></th>
                             {!! Form::close() !!}
-                            </div>
+                            </div> -->
                             <th></th>
                             <th></th>
                                 <th>
                                     {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filter', 'method'=>'POST']) !!}
-                                   <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter date after:</label></td>
+                                   <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Show from:</label></td>
                                     <td> <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" /> </td>
-                                   <td> <label style="font-size:25px;font-weight: lighter;">Filter Resource:</label>  </td>
+                                   <td> <label style="font-size:20px;font-weight: lighter;">Show Resource:</label>  </td>
                                    <div class="dropdown ">
                                    <td> <select class='form-control' id="filterresource" name="filterresource">
+                                            <option value="0">All</option>
                                             @foreach($resource_list as $resource)
                                             <option value="{{ $resource->name}}">{{ $resource->name }}</option>
                                             @endforeach  
@@ -163,8 +155,10 @@
                             <td class = "bg-success">Accepted</td>
                         @elseif($booking->status == 2)
                             <td class = "bg-danger">Rejected</td>
-                        @else
+                        @elseif($booking->status == 4)
                             <td class = "bg-danger">Cancelled</td>
+                        @elseif($booking->status == 9)
+                            <td class = "bg-secondary">Resource isn't available anymore</td>
                         @endif 
                     @endforeach
                     </tr>
@@ -178,45 +172,11 @@
             <!-- history table -->
 
 
-
+        @if(!($bookings_hist==""))
             <div class="container">
                 <div class="pt-5" style="background-color:white;">
                     <div class="card" style="border: none;">
-                        <h3>History</h3>
-                        <!-- <div class="card-body">
-                            <table class="">
-                                <tr>
-                                    <th><input type="text" class="<div class="" name=" search" placeholder="search by title"
-                                            autocomplete="off"></th>
-                                    <th></th>
-                                    <th></th>
-                                    <div class="">
-                                        <th class="pl-5">
-                                            <p style="font-size:25px;font-weight: lighter;">Filter by:</p>
-                                        </th>
-                                        <th class="pl-3">
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    Resources
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="#">Auditorium</a>
-                                                    <a class="dropdown-item" href="#">Smart classroom (505)</a>
-                                                </div>
-                                        </th>
-                                    </div>
-                        
-                        <th class="pl-5"><button class="btn btn-light">Apply</button></th>
-                        
-                        </tr>
-                        </table>
-                        </div> -->
-                    
-                    <!-- end of header options -->
-                    <!-- Table of approved applications -->
-            
+                        <h2>History</h2>
                     <table class="table text-light">
                         <thead>
                             <tr>
@@ -242,14 +202,19 @@
                                         <td class = "bg-success">Accepted</td>
                                     @elseif($booking_hist->status == 2)
                                         <td class = "bg-danger">Rejected</td>
-                                    @else
+                                    @elseif($booking_hist->status == 4)
                                         <td class = "bg-danger">Cancelled</td>
+                                    @elseif($booking_hist->status == 9)
+                                        <td class = "bg-secondary">Resource isn't available anymore</td>
                                     @endif 
                             @endforeach
                             </tr>
                         </tbody>
                     </table>
                 </div>
+            @endif
+
+
 </body>
 
 

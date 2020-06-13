@@ -4,7 +4,7 @@
 
 <body>
 
-<h3 class="card ">You'll be able to add and remove users to the resource management </h3>
+<h3 class="card ">You will be able to add and remove users shortly !!</h3>
 
 </body>
 

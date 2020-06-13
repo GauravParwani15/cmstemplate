@@ -86,33 +86,37 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-           
-<div class="container">
-    <h1>New Applications</h1>
+      
     <ul class="list-group list-group-horizontal ">
         <li >
             <a href="{{ url ('/staff/approved_application') }}"><button class="btn btn-primary float-right">Approved Applications</button></a>
+              <a href="{{ url ('/staff/rejected_application') }}"><button class="btn btn-primary float-right">Rejected Applications</button></a>
         </li>
+
     </ul>
+<div class="container">
+   
+
     <div class="pt-5" style="background-color:white;">
            <div class="card" style="border: none;">
                <div class="card-body">
+                    <h1>New Applications</h1><br>
                 <table class="">
                     <tr>
-                        <div class="container">
+                        <!-- <div class="container">
                             {!! Form::open(['id'=>'searchform', 'action' => 'FacultyController@searchnewapplications', 'method'=>'POST']) !!}
                             <th><div class="input-group col-s-8"><input type="text" class="form-control input-sm" name="search" placeholder="search by title"/> 
                                 <div class="input-group-btn"><button type="submit" form="searchform" class="btn btn-default input-sm action-button" value="Submit"><i class="glyphicon glyphicon-search"></button></td>
                                 </div></div></th>
                             {!! Form::close() !!}
-                            </div>
+                            </div> -->
                             <th></th>
                             <th></th>
                                 <th>
                                     {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filternewapplication', 'method'=>'POST']) !!}
-                                   <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Filter date after:</label></td>
+                                   <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Show after:</label></td>
                                     <td> <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" /> </td>
-                                   <td> <label style="font-size:25px;font-weight: lighter;">Filter Resource:</label>  </td>
+                                   <td> <label style="font-size:20px;font-weight: lighter;">Select Resource:</label>  </td>
                                    <div class="dropdown ">
                                    <td> <select class='form-control' id="filterresource" name="filterresource">
                                             @foreach($resource_list as $resource)
@@ -124,7 +128,7 @@
                                        <th class="pl-5"> <td><button class="btn btn-success pl-5">Apply</button>  </td> </th>
                                     {!! Form::close() !!}
                                 </th>
-                    </tr> 
+                    </tr> <br>
                 </table>
                    <table class="table text-left" id="table">
                        <thead class="thead-dark">
@@ -168,6 +172,11 @@
 
 </body>
 
-
+<script>
+    // previous date limiter 
+    var todayDate = new Date();
+    todayDate = todayDate.getFullYear() + '-0' + (todayDate.getMonth() + 1) + '-' + todayDate.getDate();
+    $('#filterdate').attr('min', todayDate);
+</script>
 
 @stop

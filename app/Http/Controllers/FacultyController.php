@@ -329,8 +329,9 @@ class FacultyController extends Controller
 
     public function manage_resources(){
         if(session('e_id')){
-            $resources = resource::all();
-            return view('faculty.pages.manage_resources')->with('resources',$resources);
+            $resources=resource::where('active','=','1')->get();
+            $deleted_resources=resource::where('active','=',0)->get();
+            return view('faculty.pages.manage_resources')->with('resources',$resources)->with('deleted_resources',$deleted_resources);
         }
         else{
             return redirect()->back()->with('error','Unauthorised Access');
@@ -340,7 +341,7 @@ class FacultyController extends Controller
 
     public function add_resources(){
         if(session('e_id')){
-            $resources = resource::all();
+             $resources=resource::where('active','=','1')->get();
             return view('faculty.pages.add_resources')->with('resources',$resources);
         }
         else{
@@ -407,12 +408,12 @@ class FacultyController extends Controller
                 public function book_resource(){
                     
                     if(session('e_id')){
-                         $resource_list = resource::all();
+                        $resource_list = resource::where('active','=',1)->get();
                         $today_date = date('Y-m-d');
                         $userid = session('e_id');
-                        $bookings = booking::where('user_id',$userid)->where('event_date','>=',$today_date)->with('resource')->get();
+                        $bookings = booking::where('user_id',$userid)->where('event_date','>',$today_date)->with('resource')->get();
                         $bookings_hist = booking::where('user_id',$userid)->where('event_date','<=',$today_date)->with('resource')->get();
-                        $resources = resource::all();
+                        $resources=resource::where('active','=','1')->get();
                         $bookings=$bookings->sortBy('event_date');
                         $bookings_hist=$bookings_hist->sortBy('event_date');
                         return view('faculty.pages.resource_booking')->with('bookings',$bookings)->with('bookings_hist',$bookings_hist)->with('resources',$resources)->with('resource_list',$resource_list);
@@ -424,10 +425,8 @@ class FacultyController extends Controller
 
                 public function new_booking(){
                     
-                    $resource_list = DB::table('resource')
-                    ->select('resource_id') 
-                    ->select('name')
-                    ->get();
+                    $resource_list = resource::where('active','=',1)->get();
+                    $resource_list=$resource_list->sortBy('name');
                     if(session('e_id')){
                         return view('faculty.pages.new_booking')->with('resource_list', $resource_list);
                     }
@@ -443,10 +442,10 @@ class FacultyController extends Controller
                     if(session('e_id')){
                         $accepted=1;
                         $booking_list=booking::where('status','=',$accepted)->get();
-                        $resource_list = resource::all();
+                        $resource_list = resource::where('active','=',1)->get();
                         $booking_list=$booking_list->sortBy('event_date');
 
-                        return view('faculty.pages.Booked_resources')->with('resource_list', $resource_list)->with('booking_list', $booking_list);
+                        return view('faculty.pages.check_availability')->with('resource_list', $resource_list)->with('booking_list', $booking_list);
                     }
                     else{
                         return redirect()->back()->with('error','Unauthorised Access');
@@ -455,25 +454,20 @@ class FacultyController extends Controller
 
                  public function filterbookedresources(Request $request){
 
-                    $resource_list = resource::all();
-                    $filterdate = $request->input('filterdate');
+                    $resource_list = resource::where('active','=',1)->get();
+                    $date = $request->input('filterdate');
                     $filterresource = $request->input('filterresource');
-                    if(is_null($filterresource)){
-                        $booking_list = booking::where('event_date','>=',$filterdate)->where('status',1)->with('resource')->get();
-                        $booking_list=$booking_list->sortBy('event_date');
-                        return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list)->with('resource_list', $resource_list);
-                    }
-                    elseif(is_null($filterdate)){
+                    if(is_null($date)){
                         $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
                         $booking_list = booking::where('resource_id',$resourceid[0]->resource_id)->where('status',1)->with('resource')->get();
                         $booking_list=$booking_list->sortBy('event_date');
-                        return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list)->with('resource_list', $resource_list);
+                        return view('faculty.pages.Booked_resources')->with('date',$date)->with('filterresource',$filterresource)->with('booking_list',$booking_list)->with('resource_list', $resource_list);
                     }
                     else{
                         $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
-                        $booking_list = booking::where('resource_id',$resourceid[0]->resource_id)->where('event_date','>=',$filterdate)->where('status',1)->with('resource')->get();
+                        $booking_list = booking::where('resource_id',$resourceid[0]->resource_id)->where('event_date','=',$date)->where('status',1)->with('resource')->get();
                         $booking_list=$booking_list->sortBy('event_date');
-                        return view('faculty.pages.Booked_resources')->with('booking_list',$booking_list)->with('resource_list', $resource_list);
+                        return view('faculty.pages.Booked_resources')->with('date',$date)->with('filterresource',$filterresource)->with('booking_list',$booking_list)->with('resource_list', $resource_list);
                     }
                 }
 
@@ -511,7 +505,7 @@ class FacultyController extends Controller
                     $userid = session('e_id');
                     $bookings = booking::where('event_name',$searchterm)->where('user_id',$userid)->where('event_date','>=',$today_date)->with('resource')->get();
                     $bookings_hist = booking::where('user_id',$userid)->where('event_date','<=',$today_date)->with('resource')->get();
-                    $resources = resource::all();
+                    $resources=resource::where('active','=','1')->get();
                     return view('faculty.pages.resource_booking')->with('bookings',$bookings)->with('bookings_hist',$bookings_hist)->with('resources',$resources);
                 }
 
@@ -534,7 +528,7 @@ class FacultyController extends Controller
                 }
 
                 public function filter(Request $request){
-                    $resource_list = resource::all();
+                    $resource_list = resource::where('active','=',1)->get();
                     $filterdate = $request->input('filterdate');
                     $filterresource = $request->input('filterresource');
                     $userid = session('e_id');
@@ -542,21 +536,21 @@ class FacultyController extends Controller
                     if(is_null($filterresource)){
                         $bookings = booking::where('user_id',$userid)->where('event_date','>=',$filterdate)->with('resource')->get();;
                         $bookings_hist = booking::where('user_id',$userid)->where('event_date','<=',$today_date)->with('resource')->get();
-                        $resources = resource::all();
+                        $resources=resource::where('active','=','1')->get();
                         return view('faculty.pages.resource_booking')->with('bookings',$bookings)->with('bookings_hist',$bookings_hist)->with('resources',$resources)->with('resource_list',$resource_list);
                     }
                     elseif(is_null($filterdate)){
                         $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
                         $bookings = booking::where('resource_id',$resourceid[0]->resource_id)->where('user_id',$userid)->where('event_date','>=',$today_date)->with('resource')->get();
                         $bookings_hist = booking::where('user_id',$userid)->where('event_date','<=',$today_date)->with('resource')->get();
-                        $resources = resource::all();
+                        $resources=resource::where('active','=','1')->get();
                         return view('faculty.pages.resource_booking')->with('bookings',$bookings)->with('bookings_hist',$bookings_hist)->with('resources',$resources)->with('resource_list',$resource_list);
                     }
                     else{
                         $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
                         $bookings = booking::where('resource_id',$resourceid[0]->resource_id)->where('user_id',$userid)->where('event_date','>=',$filterdate)->with('resource')->get();
                         $bookings_hist = booking::where('user_id',$userid)->where('event_date','<=',$today_date)->with('resource')->get();
-                        $resources = resource::all();
+                        $resources=resource::where('active','=','1')->get();;
                         return view('faculty.pages.resource_booking')->with('bookings',$bookings)->with('bookings_hist',$bookings_hist)->with('resources',$resources)->with('resource_list',$resource_list);
                     }
                 }
@@ -564,27 +558,58 @@ class FacultyController extends Controller
                 public function filterapprovedapplication(Request $request){
                     $filterdate = $request->input('filterdate');
                     $filterresource = $request->input('filterresource');
+                    $today_date = date('Y-m-d');
+                    $resource_list=resource::where('active','=',1)->get();
                     if(is_null($filterresource)){
                         $applications = booking::where('event_date','>=',$filterdate)->where('status',1)->with('resource')->get();
                         $applications=$applications->sortBy('event_date');
-                        return view('faculty.pages.approved_application')->with('applications',$applications);
+                        return view('faculty.pages.approved_application')->with('resource_list',$resource_list)->with('applications',$applications);
                     }
                     elseif(is_null($filterdate)){
                         $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
+                        $applications = booking::where('resource_id',$resourceid[0]->resource_id)->where('event_date','>',$today_date)->where('status',1)->with('resource')->get();
                         $applications=$applications->sortBy('event_date');
-                        $applications = booking::where('resource_id',$resourceid[0]->resource_id)->where('status',1)->with('resource')->get();
-                        return view('faculty.pages.approved_application')->with('applications',$applications);
+                        
+                        return view('faculty.pages.approved_application')->with('resource_list',$resource_list)->with('applications',$applications);
                     }
                     else{
                         $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
-                        $applications=$applications->sortBy('event_date');
                         $applications = booking::where('resource_id',$resourceid[0]->resource_id)->where('event_date','>=',$filterdate)->where('status',1)->with('resource')->get();
-                        return view('faculty.pages.approved_application')->with('applications',$applications);
+                        $applications=$applications->sortBy('event_date');
+                        
+                        return view('faculty.pages.approved_application')->with('resource_list',$resource_list)->with('applications',$applications);
                     }
                 }
 
+
+                public function filterrejectedapplication(Request $request){
+                    $filterdate = $request->input('filterdate');
+                    $filterresource = $request->input('filterresource');
+                     $resource_list=resource::where('active','=',1)->get();
+                    $today_date = date('Y-m-d');
+                    if(is_null($filterresource)){
+                        $applications = booking::where('event_date','>=',$filterdate)->where('status',2)->with('resource')->get();
+                        $applications=$applications->sortBy('event_date');
+                        return view('faculty.pages.rejected_application')->with('resource_list',$resource_list)->with('applications',$applications);
+                    }
+                    elseif(is_null($filterdate)){
+                        $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
+                        $applications = booking::where('resource_id',$resourceid[0]->resource_id)->where('event_date','>',$today_date)->where('status',2)->with('resource')->get();
+                        $applications=$applications->sortBy('event_date');
+                        return view('faculty.pages.rejected_application')->with('resource_list',$resource_list)->with('applications',$applications);
+                    }
+                    else{
+                        $resourceid = resource::select('resource_id')->where('name',$filterresource)->get();
+                        $applications = booking::where('resource_id',$resourceid[0]->resource_id)->where('event_date','>=',$filterdate)->where('status',2)->with('resource')->get();
+                        $applications=$applications->sortBy('event_date');
+                        return view('faculty.pages.rejected_application')->with('resource_list',$resource_list)->with('applications',$applications);
+                    }	                   
+                }
+                          
+            
+
                 public function filternewapplication(Request $request){
-                    $resource_list = resource::all();
+                    $resource_list = resource::where('active','=',1)->get();
                     $filterdate = $request->input('filterdate');
                     $filterresource = $request->input('filterresource');
                     if(is_null($filterresource)){
@@ -621,7 +646,7 @@ class FacultyController extends Controller
                 public function manage_application(){
                     
                     if(session('e_id')){
-                        $resource_list = resource::all();
+                         $resource_list = resource::where('active','=',1)->get();
                         $today_date = date('Y-m-d');
                         $userid = session('e_id');
                         $past_records = booking::where('status',0)->where('event_date','<',$today_date)->get();
@@ -649,12 +674,8 @@ class FacultyController extends Controller
                 public function application_data($booking_id){
                     
                     if(session('e_id')){
-                        $data = booking::where('booking_id',$booking_id)->with('resource')->get(); 
-                        if($data[0]->status==0){
-                            return view('faculty.pages.application_data')->with('data',$data);}
-                        else{
-                            return view('faculty.pages.approved_data')->with('data',$data);
-                        }
+                        $data = booking::where('booking_id',$booking_id)->with('resource')->get();
+                        return view('faculty.pages.application_data')->with('data',$data);
                     }
                     else{
                         return redirect()->back()->with('error','Unauthorised Access');
@@ -703,30 +724,61 @@ class FacultyController extends Controller
                 public function approved_application(){
                     
                     if(session('e_id')){
-                        $applications = booking::where('status',1)->with('resource')->get();
-                        $applications=$applications->sortBy('event_date');
-                        return view('faculty.pages.approved_application')->with('applications',$applications);
+                        $today_date = date('Y-m-d');                    
+                        $applications = booking::where('status',1)->where('event_date','>',$today_date)->with('resource')->get();                    
+                        $applications=$applications->sortBy('status');
+                        $resource_list=resource::where('active','=',1)->get();
+                        return view('faculty.pages.approved_application')->with('resource_list',$resource_list)->with('applications',$applications);
                     }
                     else{
                         return redirect()->back()->with('error','Unauthorised Access');
                     }
                 }
 
+                public function rejected_application(){
+
+                    if(session('e_id')){
+                        $today_date = date('Y-m-d');
+                        $applications = booking::where('status',2)->where('event_date','>',$today_date)->with('resource')->get();
+                        $applications=$applications->sortBy('status');
+                         $resource_list=resource::where('active','=',1)->get();
+                        return view('faculty.pages.rejected_application')->with('resource_list',$resource_list)->with('applications',$applications);
+                    }
+                    else{
+                        return redirect()->back()->with('error','Unauthorised Access');
+                    }
+                }
 
                 public function delete_resources($resource_id){
                     if (session('e_id')){
                         //$data = booking::where('booking_id',$booking_id)->with('resource')->get();
-                        DB::table('booking')->where('resource_id','=',$resource_id)->delete();
-                        DB::table('resource')->where('resource_id', '=', $resource_id)->delete();
-
-                        $resources = resource::all();
-                        return view('faculty.pages.manage_resources')->with('resources',$resources);
+                        //DB::table('booking')->where('resource_id','=',$resource_id)->delete();
+                        //DB::table('resource')->where('resource_id', '=', $resource_id)->delete();
+                        resource::where('resource_id', $resource_id)->update(array('active' => 0));
+                        booking::where('resource_id', $resource_id)->update(array('status' => 9));
+                        $resources=resource::where('active','=','1')->get();
+                        return redirect('/staff/manage_resources')->with('resources',$resources);
                     }
                     else{
                         return redirect()->back()->with('error','Unauthorised Access');
                     }
                 }
 
+
+                public function readd_resources($resource_id){
+                    if (session('e_id')){
+                        //$data = booking::where('booking_id',$booking_id)->with('resource')->get();
+                        //DB::table('booking')->where('resource_id','=',$resource_id)->delete();
+                        //DB::table('resource')->where('resource_id', '=', $resource_id)->delete();
+                        resource::where('resource_id', $resource_id)->update(array('active' => 1));
+                        //booking::where('resource_id', $resource_id)->update(array('status' => 9));
+                        $resources=resource::where('active','=','0')->get();
+                        return redirect('/staff/manage_resources')->with('resources',$resources);
+                    }
+                    else{
+                        return redirect()->back()->with('error','Unauthorised Access');
+                    }
+                }
 
     public function defaulter_list() 
     { 

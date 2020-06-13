@@ -38,16 +38,20 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/new_booking','FacultyController@new_booking');
     Route::get('/check_availability','FacultyController@check_availability');
     Route::get('booking/booking_data/{id}','FacultyController@booking_data')->name('booking_data');
-    Route::get('booking/resource_data/{id}','FacultyController@resource_data')->name('resource_data');
+    Route::get('resource_data/{id}','FacultyController@resource_data')->name('resource_data');
     Route::get('booking/history_data/{id}','FacultyController@bookinghist_data')->name('history_data');
     Route::post('/store','BookingsController@store');
     Route::post('/search','FacultyController@search');
     Route::get('/manage_resources','FacultyController@manage_resources');
     Route::get('/add_resources','FacultyController@add_resources');
+    Route::get('/rejected_application', 'FacultyController@rejected_application');
+
 
     Route::get('/reports','FacultyController@reports');
     Route::get('/manage_users','FacultyController@manage_users');
  
+    Route::post('/filteradmin/2','FacultyController@filterrejectedapplication');
+    Route::post('/check_availability/results','FacultyController@filterbookedresources');
     Route::post('/filter/0','FacultyController@filterbookedresources');
     Route::post('resource_data','FacultyController@modify_resource');
     Route::post('/add_resources','FacultyController@store_resource');
@@ -64,7 +68,9 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/cancel/{id}','FacultyController@cancel')->name('cancel');
 
     Route::get('/delete_resources/{id}','FacultyController@delete_resources')->name('delete_resources');
+    Route::get('/readd_resources/{id}','FacultyController@readd_resources')->name('readd_resources');
 });
+
 
 
 
