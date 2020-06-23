@@ -39,9 +39,12 @@
 }
 
 </style>
-    <h1>Booking Data</h1>
+   
     <div class = "well">
         <table class="table" id="table">
+        <thead>
+           	<th> <h1>Booking Data</h1> </th>
+            </thead>
             <tbody>
                 <tr>
                     <td colspan="3">Event Name:-{{$data[0]->event_name}}</td>

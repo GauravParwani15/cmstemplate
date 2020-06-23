@@ -66,6 +66,7 @@ Route::group(['prefix'=>'staff', 'middleware' => 'admin'], function() {
     Route::get('/accept/{id}','FacultyController@accept')->name('accept');
     Route::get('/reject/{id}','FacultyController@reject')->name('reject');
     Route::get('/cancel/{id}','FacultyController@cancel')->name('cancel');
+    Route::get('/canceluser/{id}','FacultyController@canceluser')->name('canceluser');
 
     Route::get('/delete_resources/{id}','FacultyController@delete_resources')->name('delete_resources');
     Route::get('/readd_resources/{id}','FacultyController@readd_resources')->name('readd_resources');

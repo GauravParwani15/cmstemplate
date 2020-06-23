@@ -52,7 +52,7 @@
                     <td colspan="3">User Mail: {{$data[0]->user_email}}</td>
                 </tr>
                 <tr class="text-center">
-                    <td colspan="6"><button class="btn btn-danger">Cancel Booking</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url ('/staff/booking') }}"><button class="btn btn-primary">Back</button></a></td>
+                     <td colspan="6"><button type="button" class="btn btn-danger" onclick="window.location='{{route('canceluser',['id'=>$data[0]->booking_id])}}'">Cancel Booking</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url ('/staff/booking') }}"><button class="btn btn-primary">Back</button></a></td>
                 </tr>
             </tbody>
         </table>

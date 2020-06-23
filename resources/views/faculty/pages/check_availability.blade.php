@@ -37,7 +37,7 @@
     <div class="container">
         <div class="pt-5" style="background-color:white;">
             <div class="card" style="border: none;">
-                <h2>Check Availability</h2><br>
+                <h1>Check Availability</h1><br>
                  <h3>Enter date and resource to check the availability</h3><br><br>
                 <div class="card-body">
                     <table class="">
@@ -52,6 +52,7 @@
                                     <label style="font-size:20px;font-weight: lighter;">Select Resource:</label>  </td>
                                    <div class="dropdown ">
                                    <td> <select class='form-control' id="filterresource" name="filterresource">
+                                    <option value="all">All</option>
                                             @foreach($resource_list as $resource)
                                             <option value="{{ $resource->name}}">{{ $resource->name }}</option>
                                             @endforeach  

@@ -93,9 +93,9 @@
 
     <div class="container">
         <div class="pt-5" style="background-color:white;">
-            <div class="card" style="border: none;">
-                <h2>Booking status</h2><br>
-                <div class="card-body">
+            <div class="" style="border: none;">
+                <h1>Booking Status</h1><br>
+                <div class="">
                     <table class="">
                          <tr>
                         <!-- <div class="container">
@@ -105,23 +105,22 @@
                                 </div></div></th>
                             {!! Form::close() !!}
                             </div> -->
-                            <th></th>
-                            <th></th>
+                            
                                 <th>
                                     {!! Form::open(['style'=>'display:flex; flex-direction:row;','class'=>'form-inline','id'=>'filterform', 'action' => 'FacultyController@filter', 'method'=>'POST']) !!}
                                    <td> <label for="filterdate" style="display:block; font-size:20px;font-weight: lighter;" class="fieldlabels">Show from:</label></td>
                                     <td> <input style ="display:block;" type="date" class="col-xs-1 form-control input-sm" id="filterdate" name="filterdate" placeholder="Date" /> </td>
-                                   <td> <label style="font-size:20px;font-weight: lighter;">Show Resource:</label>  </td>
+                                   <td> <label style="font-size:20px;font-weight: lighter;">&nbsp;Show Resource:</label>  </td>
                                    <div class="dropdown ">
                                    <td> <select class='form-control' id="filterresource" name="filterresource">
-                                            <option value="0">All</option>
+                                            <option value="all">All</option>
                                             @foreach($resource_list as $resource)
                                             <option value="{{ $resource->name}}">{{ $resource->name }}</option>
                                             @endforeach  
                                         </select>
                                     </div> 
                                     </td>
-                                       <th class="pl-5"> <td><button class="btn btn-success pl-5">Apply</button>  </td> </th>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-success pl-5">Apply</button>  </td>
                                     {!! Form::close() !!}
                                 </th>
                     </tr> 
@@ -138,27 +137,29 @@
                         <th scope="col">Date</th>
                         <th scope="col">Start Time</th>
                         <th scope="col">End Time</th>
+                        <th scope="col">Actions</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($bookings as $booking)
                     <tr  class="text-left">
-                        <td><a href= "{{route('booking_data',['id'=>$booking->booking_id])}}">{{$booking->event_name}}</a></td>
+                        <td>{{$booking->event_name}}</td>
                         <td>{{$booking->resource->name}}</td>
                         <td>{{$booking->event_date}}</td>
                         <td>{{$booking->start_time}}</td>
                         <td>{{$booking->end_time}}</td>
+                        <td><a href= "{{route('booking_data',['id'=>$booking->booking_id])}}"><button class="btn btn-info">Details</button></a></td>
                         @if($booking->status == 0)
-                            <td class = "bg-warning">Pending</td>
+                            <td class = "bg-warning">Pending &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         @elseif($booking->status == 1)
-                            <td class = "bg-success">Accepted</td>
+                            <td class = "bg-success">Accepted &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         @elseif($booking->status == 2)
-                            <td class = "bg-danger">Rejected</td>
+                            <td class = "bg-danger">Rejected &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         @elseif($booking->status == 4)
-                            <td class = "bg-danger">Cancelled</td>
+                            <td class = "bg-danger">Cancelled &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         @elseif($booking->status == 9)
-                            <td class = "bg-secondary">Resource isn't available anymore</td>
+                            <td class = "bg-secondary">Resource unavialable</td>
                         @endif 
                     @endforeach
                     </tr>
@@ -167,7 +168,12 @@
         </div>
     </div>
 
-
+    <script>
+    // previous date limiter 
+    var todayDate = new Date();
+    todayDate = todayDate.getFullYear() + '-0' + (todayDate.getMonth() + 1) + '-' + todayDate.getDate();
+    $('#filterdate').attr('min', todayDate);
+</script>
 
             <!-- history table -->
 
@@ -175,8 +181,8 @@
         @if(!($bookings_hist==""))
             <div class="container">
                 <div class="pt-5" style="background-color:white;">
-                    <div class="card" style="border: none;">
-                        <h2>History</h2>
+                    <div class="" style="border:none;">
+                        <h1>History</h1><br>
                     <table class="table text-light">
                         <thead>
                             <tr>
@@ -185,27 +191,29 @@
                                 <th scope="col">Date</th>
                                 <th scope="col">Start Time</th>
                                 <th scope="col">End Time</th>
+                                <th scope="col">Actions</th>
                                 <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($bookings_hist as $booking_hist)
                                 <tr  class="text-left">
-                                    <td><a href= "{{route('history_data',['id'=>$booking_hist->booking_id])}}">{{$booking_hist->event_name}}</a></td>
+                                    <td>{{$booking_hist->event_name}}</td>
                                     <td>{{$booking_hist->resource->name}}</td>
                                     <td>{{$booking_hist->event_date}}</td>
                                     <td>{{$booking_hist->start_time}}</td>
                                     <td>{{$booking_hist->end_time}}</td>
+                                    <td><a href= "{{route('history_data',['id'=>$booking_hist->booking_id])}}"><button class="btn btn-info">Details</button></a></td>
                                     @if($booking_hist->status == 0)
-                                        <td class = "bg-warning">Pending</td>
+                                        <td class = "bg-warning">Pending &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                     @elseif($booking_hist->status == 1)
-                                        <td class = "bg-success">Accepted</td>
+                                        <td class = "bg-success">Accepted &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                     @elseif($booking_hist->status == 2)
-                                        <td class = "bg-danger">Rejected</td>
+                                        <td class = "bg-danger">Rejected &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                     @elseif($booking_hist->status == 4)
-                                        <td class = "bg-danger">Cancelled</td>
+                                        <td class = "bg-danger">Cancelled &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                     @elseif($booking_hist->status == 9)
-                                        <td class = "bg-secondary">Resource isn't available anymore</td>
+                                        <td class = "bg-secondary">Resource unavailable</td>
                                     @endif 
                             @endforeach
                             </tr>

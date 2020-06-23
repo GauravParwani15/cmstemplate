@@ -117,6 +117,7 @@
                                    <td> <label style="font-size:20px;font-weight: lighter;">Filter Resource:</label>  </td>
                                    <div class="dropdown ">
                                    <td> <select class='form-control' id="filterresource" name="filterresource">
+                                    <option value="all">All</option>
                                             @foreach($resource_list as $resource)
                                             <option value="{{ $resource->name}}">{{ $resource->name }}</option>
                                             @endforeach  
