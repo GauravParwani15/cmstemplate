@@ -114,7 +114,7 @@
                                    <td> <label style="font-size:20px;font-weight: lighter;">Show Resource:</label>  </td>
                                    <div class="dropdown ">
                                    <td> <select class='form-control' id="filterresource" name="filterresource">
-                                            <option value="0">All</option>
+                                            <option value="all">All</option>
                                             @foreach($resource_list as $resource)
                                             <option value="{{ $resource->name}}">{{ $resource->name }}</option>
                                             @endforeach  
@@ -139,12 +139,13 @@
                         <th scope="col">Start Time</th>
                         <th scope="col">End Time</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($bookings as $booking)
                     <tr  class="text-left">
-                        <td><a href= "{{route('booking_data',['id'=>$booking->booking_id])}}">{{$booking->event_name}}</a></td>
+                        <td>{{$booking->event_name}}</td>
                         <td>{{$booking->resource->name}}</td>
                         <td>{{$booking->event_date}}</td>
                         <td>{{$booking->start_time}}</td>
@@ -160,7 +161,9 @@
                         @elseif($booking->status == 9)
                             <td class = "bg-secondary">Resource isn't available anymore</td>
                         @endif 
+                        <td><a href= "{{route('booking_data',['id'=>$booking->booking_id])}}"><button type="button" onclick="" type="button" class="btn btn-warning">Details</button></a></td>
                     @endforeach
+                    	
                     </tr>
                 </tbody>
             </table>
@@ -186,12 +189,13 @@
                                 <th scope="col">Start Time</th>
                                 <th scope="col">End Time</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($bookings_hist as $booking_hist)
                                 <tr  class="text-left">
-                                    <td><a href= "{{route('history_data',['id'=>$booking_hist->booking_id])}}">{{$booking_hist->event_name}}</a></td>
+                                    <td>{{$booking_hist->event_name}}</td>
                                     <td>{{$booking_hist->resource->name}}</td>
                                     <td>{{$booking_hist->event_date}}</td>
                                     <td>{{$booking_hist->start_time}}</td>
@@ -207,6 +211,7 @@
                                     @elseif($booking_hist->status == 9)
                                         <td class = "bg-secondary">Resource isn't available anymore</td>
                                     @endif 
+                                    <td><a href= "{{route('history_data',['id'=>$booking_hist->booking_id])}}"><button type="button" onclick="" type="button" class="btn btn-warning">Details</button></a></td>
                             @endforeach
                             </tr>
                         </tbody>
