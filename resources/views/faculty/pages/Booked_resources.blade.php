@@ -51,7 +51,11 @@
              <table class="table bg-light">
                 <thead>
                     @if(count($booking_list)==0)
-                        <h4> {{$filterresource}} is available for Date {{$date}} (Date format: yyyy-mm-dd)</h4>
+                        @if($filterresource == 'all')
+                        	<h4> Every resource is available for Date {{date('d-M-Y', strtotime($date))}}</h4>
+                        @else
+                        	<h4> {{$filterresource}} is available for Date {{date('d-M-Y', strtotime($date))}}</h4>
+                        @endif
                     @else
                             <tr>
                                 <th scope="col">Resource name</th>
@@ -66,8 +70,8 @@
                             @foreach($booking_list as $booking)
                                 <tr class="text-left" >
                                         <td>{{$booking->resource->name}}</td>
-                                        <td>{{ $booking->event_date }}</td>
-                                        <td>{{ $booking->start_time }} - {{ $booking->end_time }}</td>
+                                        <td>{{date('d-M-Y', strtotime($booking->event_date))}}</td>
+                        		            <td>{{date('h:i A', strtotime($booking->start_time))}} - {{date('h:i A', strtotime($booking->end_time))}}</td>
                                 </tr>
                             @endforeach
                         </tbody>

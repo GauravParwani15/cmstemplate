@@ -146,9 +146,9 @@
                     <tr  class="text-left">
                         <td>{{$booking->event_name}}</td>
                         <td>{{$booking->resource->name}}</td>
-                        <td>{{$booking->event_date}}</td>
-                        <td>{{$booking->start_time}}</td>
-                        <td>{{$booking->end_time}}</td>
+                        <td>{{date('d-M-Y', strtotime($booking->event_date))}}</td>
+                        <td>{{date('h:i A', strtotime($booking->start_time))}}</td>
+                        <td>{{date('h:i A', strtotime($booking->end_time))}}</td>
                         <td><a href= "{{route('booking_data',['id'=>$booking->booking_id])}}"><button class="btn btn-info">Details</button></a></td>
                         @if($booking->status == 0)
                             <td class = "bg-warning">Pending &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -200,9 +200,9 @@
                                 <tr  class="text-left">
                                     <td>{{$booking_hist->event_name}}</td>
                                     <td>{{$booking_hist->resource->name}}</td>
-                                    <td>{{$booking_hist->event_date}}</td>
-                                    <td>{{$booking_hist->start_time}}</td>
-                                    <td>{{$booking_hist->end_time}}</td>
+                                    <td>{{date('d-M-Y', strtotime($booking_hist->event_date))}}</td>
+                        	          <td>{{date('h:i A', strtotime($booking_hist->start_time))}}</td>
+                        	          <td>{{date('h:i A', strtotime($booking_hist->end_time))}}</td>
                                     <td><a href= "{{route('history_data',['id'=>$booking_hist->booking_id])}}"><button class="btn btn-info">Details</button></a></td>
                                     @if($booking_hist->status == 0)
                                         <td class = "bg-warning">Pending &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>

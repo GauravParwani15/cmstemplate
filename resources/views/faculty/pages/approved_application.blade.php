@@ -148,8 +148,8 @@
                     <tr>
                         <td><a href= "{{route('application_data',['id'=>$application->booking_id])}}">{{$application->event_name}}</a></td>
                         <td>{{$application->resource->name}}</td>
-                        <td>{{$application->event_date}}</td>
-                        <td>{{$application->start_time}}-{{$application->end_time}}</td>
+                        <td>{{date('d-M-Y', strtotime($application->event_date))}}</td>
+                        <td>{{date('h:i A', strtotime($application->start_time))}} - {{date('h:i A', strtotime($application->end_time))}}</td>
                          <td><a href= "{{route('application_data',['id'=>$application->booking_id])}}"><button type="button" onclick="" type="button" class="btn btn-warning">Details</button></a></td>
                         <td><button type="button" class="btn btn-danger" onclick="window.location='{{route('cancel',['id'=>$application->booking_id])}}'">Cancel Application</button></td>
                     </tr>

@@ -138,8 +138,8 @@
                     <tr>
                         <td>{{$application->event_name}}</td>
                         <td>{{$application->resource->name}}</td>
-                        <td>{{$application->event_date}}</td>
-                        <td>{{$application->start_time}}-{{$application->end_time}}</td>
+                        <td>{{date('d-M-Y', strtotime($application->event_date))}}</td>
+                        <td>{{date('h:i A', strtotime($application->start_time))}} - {{date('h:i A', strtotime($application->end_time))}}</td>
                         <td><a href= "{{route('application_data',['id'=>$application->booking_id])}}"><button type="button" onclick="" type="button" class="btn btn-warning">Details</button></a></td>
                         <td><button type="button" class="btn btn-success" onclick="window.location='{{route('accept',['id'=>$application->booking_id])}}'">Re-approve Application</button></td>
                     </tr>
